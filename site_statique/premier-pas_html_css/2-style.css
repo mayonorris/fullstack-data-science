@@ -38,3 +38,10 @@ a {
   p, li, h2 {
     color: #F9F8FF;
   }
+
+  .contacter {
+    font-family: "Manrope", sans-serif;
+    color: white;
+    font-size: 1em;
+    background: linear-gradient(90deg, #8E86B5, #ACAEED);
+  }
