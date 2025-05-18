@@ -57,7 +57,8 @@ a {
   }
 
   .contacter :hover {
-    color: linear-gradient(90deg, #696484, #8788BA);
+    background: linear-gradient(#696484, #8788BA);
+    text-decoration: none;
   }
 
   .lien:hover {
