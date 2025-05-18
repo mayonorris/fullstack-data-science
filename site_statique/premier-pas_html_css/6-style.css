@@ -1,0 +1,77 @@
+
+a {
+    color: #242424;
+    text-decoration: none;
+    font-family: "Manrope", sans-serif;
+    font-size: 1em;
+  }
+  
+  em {
+    color: #a5b4fc;
+    font-style: normal;
+  }
+
+  h1 {
+    font-size: 3.5em;
+    color: #A5B4FC;
+    font-family: "Montserrat", sans-serif;
+  }
+
+  p {
+    font-size: 1.1em;
+    font-family: "Manrope", sans-serif;
+  }
+
+  li {
+    font-family: "Manrope", sans-serif;
+    font-size: 1em;
+  }
+  /*Background*/
+  body {
+    background-color: #1F2039;
+    padding: auto;
+  }
+
+  p, li, h2 {
+    color: #F9F8FF;
+  }
+
+  .contacter {
+    font-family: "Manrope", sans-serif;
+    color: white;
+    font-size: 1em;
+    background: linear-gradient(90deg, #8E86B5, #ACAEED);
+    border-radius: 50px;
+  }
+
+  .services {
+    border-bottom: 1px solid #8e86b5;
+    border-right: 1px solid #8e86b5;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  .contacter :hover {
+    background: linear-gradient(#696484, #8788BA);
+    text-decoration: none;
+  }
+
+  header, footer {
+    background-color: white;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 50px;
+    padding-right: 50px;
+  }
+
+  section {
+    padding: 80px;
+  }
+
+  .a-propos-main {
+    width: 50%;
+    margin: auto;
+  }
+
