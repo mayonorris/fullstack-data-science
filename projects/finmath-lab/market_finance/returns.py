@@ -55,6 +55,32 @@ def log_return(initial_price: float, final_price: float) -> float:
 
     return math.log(final_price / initial_price)
 
+# Continued from previous cell
+def simple_returns(prices):
+    if len(prices) < 2:
+        raise ValueError("At least two prices are required.")
+
+    if any(price <= 0 for price in prices):
+        raise ValueError("All prices must be greater than zero.")
+
+    return [
+        simple_return(prices[i], prices[i + 1])
+        for i in range(len(prices) - 1)
+    ]
+
+# Calculate logarithmic returns for a list of prices
+def log_returns(prices):
+    if len(prices) < 2:
+        raise ValueError("At least two prices are required.")
+
+    if any(price <= 0 for price in prices):
+        raise ValueError("All prices must be greater than zero.")
+
+    return [
+        log_return(prices[i], prices[i + 1])
+        for i in range(len(prices) - 1)
+    ]
+
 
 if __name__ == "__main__":
     p0 = 100
@@ -62,9 +88,18 @@ if __name__ == "__main__":
 
     sr = simple_return(p0, p1)
     lr = log_return(p0, p1)
-
+    # Calculate simple and logarithmic returns for the given prices
     print("Returns Module")
     print(f"Initial price: {p0}")
     print(f"Final price: {p1}")
     print(f"Simple return: {sr:.4f}")
     print(f"Log return: {lr:.4f}")
+# Calculate simple and logarithmic returns for a list of prices
+    prices = [100, 105, 102, 110]
+#  Test values error with: princes = [-100, 105, 102, 110]
+    simple_returns_result = simple_returns(prices)
+    log_returns_result = log_returns(prices)
+
+    print("\nList of Prices:", prices)
+    print("Simple Returns:", [f"{r:.4f}" for r in simple_returns_result])
+    print("Log Returns:", [f"{r:.4f}" for r in log_returns_result])
