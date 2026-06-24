@@ -55,7 +55,6 @@ def log_return(initial_price: float, final_price: float) -> float:
 
     return math.log(final_price / initial_price)
 
-# Continued from previous cell
 def simple_returns(prices):
     if len(prices) < 2:
         raise ValueError("At least two prices are required.")
@@ -81,6 +80,30 @@ def log_returns(prices):
         for i in range(len(prices) - 1)
     ]
 
+# 
+
+def mean_return(returns: list[float]) -> float:
+    """
+    Calculate the arithmetic mean of a list of returns.
+
+    Formula:
+        mean = sum(returns) / n
+
+    Args:
+        returns: List of returns.
+
+    Returns:
+        Mean return as a decimal.
+
+    Example:
+        mean_return([0.05, -0.028571, 0.078431]) returns approximately 0.0333
+    """
+    if len(returns) == 0:
+        raise ValueError("At least one return is required.")
+
+    return sum(returns) / len(returns)
+
+########################### Main execution block ############################
 
 if __name__ == "__main__":
     p0 = 100
@@ -88,18 +111,23 @@ if __name__ == "__main__":
 
     sr = simple_return(p0, p1)
     lr = log_return(p0, p1)
-    # Calculate simple and logarithmic returns for the given prices
+
     print("Returns Module")
     print(f"Initial price: {p0}")
     print(f"Final price: {p1}")
     print(f"Simple return: {sr:.4f}")
     print(f"Log return: {lr:.4f}")
-# Calculate simple and logarithmic returns for a list of prices
+
     prices = [100, 105, 102, 110]
-#  Test values error with: princes = [-100, 105, 102, 110]
+
     simple_returns_result = simple_returns(prices)
     log_returns_result = log_returns(prices)
+
+    mean_simple_return_result = mean_return(simple_returns_result)
+    mean_log_return_result = mean_return(log_returns_result)
 
     print("\nList of Prices:", prices)
     print("Simple Returns:", [f"{r:.4f}" for r in simple_returns_result])
     print("Log Returns:", [f"{r:.4f}" for r in log_returns_result])
+    print("Mean Simple Return:", f"{mean_simple_return_result:.4f}")
+    print("Mean Log Return:", f"{mean_log_return_result:.4f}")
