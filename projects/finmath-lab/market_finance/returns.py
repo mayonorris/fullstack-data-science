@@ -103,6 +103,43 @@ def mean_return(returns: list[float]) -> float:
 
     return sum(returns) / len(returns)
 
+def volatility(returns: list[float], sample: bool = True) -> float:
+    """
+    Calculate the volatility, or standard deviation, of a list of returns.
+
+    Args:
+        returns: List of returns.
+        sample: If True, calculate sample standard deviation.
+            If False, calculate population standard deviation.
+
+    Returns:
+        Volatility as a decimal.
+
+    Formula:
+        variance = sum((r - mean)²) / (n - 1) if sample=True
+        variance = sum((r - mean)²) / n if sample=False
+        volatility = sqrt(variance)
+
+    Example:
+        volatility([0.05, -0.028571, 0.078431]) returns approximately 0.0554
+    """
+    if len(returns) == 0:
+        raise ValueError("At least one return is required.")
+
+    if sample and len(returns) < 2:
+        raise ValueError("At least two returns are required when sample=True.")
+
+    mean = mean_return(returns)
+
+    denominator = len(returns) - 1 if sample else len(returns)
+
+    variance = sum(
+        (r - mean) ** 2
+        for r in returns
+    ) / denominator
+
+    return math.sqrt(variance)
+
 ########################### Main execution block ############################
 
 if __name__ == "__main__":
@@ -131,3 +168,6 @@ if __name__ == "__main__":
     print("Log Returns:", [f"{r:.4f}" for r in log_returns_result])
     print("Mean Simple Return:", f"{mean_simple_return_result:.4f}")
     print("Mean Log Return:", f"{mean_log_return_result:.4f}")
+
+    volatility_result = volatility(log_returns_result)
+    print("Volatility:", f"{volatility_result:.4f}")
