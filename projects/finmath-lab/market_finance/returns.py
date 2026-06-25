@@ -140,6 +140,100 @@ def volatility(returns: list[float], sample: bool = True) -> float:
 
     return math.sqrt(variance)
 
+def cagr(initial_value: float, final_value: float, years: float) -> float:
+    """
+    Calculate the Compound Annual Growth Rate (CAGR).
+
+    Formula:
+        CAGR = (Vf / Vi) ** (1 / n) - 1
+
+    Args:
+        initial_value: Initial investment or asset value.
+        final_value: Final investment or asset value.
+        years: Investment horizon in years.
+
+    Returns:
+        Annualized return as a decimal.
+
+    Example:
+        cagr(100, 121, 2) returns 0.10
+    """
+    if initial_value <= 0:
+        raise ValueError("Initial value must be greater than zero.")
+
+    if final_value <= 0:
+        raise ValueError("Final value must be greater than zero.")
+
+    if years <= 0:
+        raise ValueError("The time horizon must be greater than zero.")
+
+    return (final_value / initial_value) ** (1 / years) - 1
+
+
+def compound_annualized_return(
+    returns: list[float],
+    periods_per_year: int = 252
+) -> float:
+    """
+    Calculate the compound annualized return from a list of periodic simple returns.
+
+    Formula:
+        annualized_return = Π(1 + r_i) ** (periods_per_year / n) - 1
+
+    Args:
+        returns: List of periodic simple returns.
+        periods_per_year: Number of periods in one year.
+            Use 252 for daily trading data, 52 for weekly data,
+            12 for monthly data, and 4 for quarterly data.
+
+    Returns:
+        Compound annualized return as a decimal.
+    """
+    if len(returns) == 0:
+        raise ValueError("At least one return is required.")
+
+    if periods_per_year <= 0:
+        raise ValueError("Periods per year must be greater than zero.")
+
+    if any(r < -1 for r in returns):
+        raise ValueError("Returns cannot be less than -100%.")
+
+    total_wealth_factor = 1.0
+
+    for r in returns:
+        total_wealth_factor *= 1 + r
+
+    years = len(returns) / periods_per_year
+
+    return total_wealth_factor ** (1 / years) - 1
+
+
+def annualized_volatility(
+    returns: list[float],
+    periods_per_year: int = 252,
+    sample: bool = True
+) -> float:
+    """
+    Annualize the volatility of periodic returns.
+
+    Formula:
+        annualized_volatility = periodic_volatility * sqrt(periods_per_year)
+
+    Args:
+        returns: List of periodic returns.
+        periods_per_year: Number of periods in one year.
+        sample: If True, use sample volatility.
+
+    Returns:
+        Annualized volatility as a decimal.
+    """
+    if periods_per_year <= 0:
+        raise ValueError("Periods per year must be greater than zero.")
+
+    periodic_volatility = volatility(returns, sample=sample)
+
+    return periodic_volatility * math.sqrt(periods_per_year)
+
 ########################### Main execution block ############################
 
 if __name__ == "__main__":
@@ -171,3 +265,11 @@ if __name__ == "__main__":
 
     volatility_result = volatility(log_returns_result)
     print("Volatility:", f"{volatility_result:.4f}")
+
+cagr_result = cagr(100, 121, 2)
+compound_annual_return = compound_annualized_return(simple_returns_result, periods_per_year=252)
+annual_vol = annualized_volatility(simple_returns_result, periods_per_year=252)
+
+print("CAGR:", f"{cagr_result:.4f}")
+print("Compound Annualized Return:", f"{compound_annual_return:.4f}")
+print("Annualized Volatility:", f"{annual_vol:.4f}")
