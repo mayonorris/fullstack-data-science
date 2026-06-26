@@ -234,6 +234,57 @@ def annualized_volatility(
 
     return periodic_volatility * math.sqrt(periods_per_year)
 
+
+def sharpe_ratio(
+    returns: list[float],
+    risk_free_rate = 0.0,
+    periods_per_year: int = 252,
+    sample: bool = True
+) -> float:
+    """
+    Calculate the annualized Sharpe ratio of a series of periodic returns.
+
+    The risk-free rate is assumed to be annual.
+
+    Formula:
+        Sharpe Ratio = mean(periodic excess returns) / periodic volatility
+                       * sqrt(periods_per_year)
+
+    Args:
+        returns: List of periodic returns.
+        risk_free_rate: Annual risk-free rate, as a decimal.
+        periods_per_year: Number of return periods in one year.
+            Use 252 for daily data, 52 for weekly data, and 12 for monthly data.
+        sample: If True, use sample volatility.
+
+    Returns:
+        Annualized Sharpe ratio.
+
+    Example:
+        sharpe_ratio([0.05, -0.028571, 0.078431], risk_free_rate=0.01)
+    """
+    if len(returns) == 0:
+        raise ValueError("At least one return is required.")
+
+    if periods_per_year <= 0:
+        raise ValueError("Periods per year must be greater than zero.")
+
+    periodic_volatility = volatility(returns, sample=sample)
+
+    if periodic_volatility == 0:
+        raise ValueError("Volatility cannot be zero when calculating Sharpe ratio.")
+
+    periodic_risk_free_rate = (1 + risk_free_rate) ** (1 / periods_per_year) - 1
+
+    excess_returns = [
+        r - periodic_risk_free_rate
+        for r in returns
+    ]
+
+    mean_excess_return = mean_return(excess_returns)
+
+    return mean_excess_return / periodic_volatility * math.sqrt(periods_per_year)
+
 ########################### Main execution block ############################
 
 if __name__ == "__main__":
@@ -273,3 +324,6 @@ annual_vol = annualized_volatility(simple_returns_result, periods_per_year=252)
 print("CAGR:", f"{cagr_result:.4f}")
 print("Compound Annualized Return:", f"{compound_annual_return:.4f}")
 print("Annualized Volatility:", f"{annual_vol:.4f}")
+
+sharpe_result = sharpe_ratio(simple_returns_result, risk_free_rate=0.01, periods_per_year=252)
+print("Sharpe Ratio:", f"{sharpe_result:.4f}")
